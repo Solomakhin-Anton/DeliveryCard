@@ -89,6 +89,18 @@ public class DeliveryCardTest {
     }
 
     @Test
+    void shouldSubmitWithoutName() {
+        SelenideElement form = $("form[class='form form_size_m form_theme_alfa-on-white']");
+        form.$("[placeholder='Город']").setValue("Казань");
+        form.$("[placeholder='Дата встречи']").doubleClick().sendKeys(formatter.format(newDate));
+        form.$("[name=phone]").setValue("+79815463321");
+        form.$(".checkbox__box").click();
+        $$(".button__content").find(exactText("Забронировать")).click();
+        form.$(".input_theme_alfa-on-white.input_invalid .input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
+    @Test
     void shouldSubmitWithIncorrectName() {
         SelenideElement form = $("form[class='form form_size_m form_theme_alfa-on-white']");
         form.$("[placeholder='Город']").setValue("Казань");
@@ -99,6 +111,18 @@ public class DeliveryCardTest {
         $$(".button__content").find(exactText("Забронировать")).click();
         form.$(".input_theme_alfa-on-white.input_invalid .input__sub")
                 .shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+    }
+
+    @Test
+    void shouldSubmitWithoutNumber() {
+        SelenideElement form = $("form[class='form form_size_m form_theme_alfa-on-white']");
+        form.$("[placeholder='Город']").setValue("Казань");
+        form.$("[placeholder='Дата встречи']").doubleClick().sendKeys(formatter.format(newDate));
+        form.$("[name=name]").setValue("Имя Фамилия");
+        form.$(".checkbox__box").click();
+        $$(".button__content").find(exactText("Забронировать")).click();
+        form.$(".input_theme_alfa-on-white.input_invalid .input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"));
     }
 
     @Test
